@@ -1,0 +1,3 @@
+<resources>
+    <string name="service_desc">Opens the old-style menu when the new one appears. Only reads which window opened. Turn off any time in the Old Menu app.</string>
+</resources>
