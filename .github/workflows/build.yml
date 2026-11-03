@@ -11,15 +11,9 @@ jobs:
         with: { distribution: temurin, java-version: 17 }
       - uses: gradle/actions/setup-gradle@v4
         with: { gradle-version: "8.9" }
-      - name: Restore your private signing key
-        run: echo "${{ secrets.KEYSTORE_B64 }}" | base64 -d > $RUNNER_TEMP/my.jks
-      - run: gradle assembleRelease
-        env:
-          KS_FILE: ${{ runner.temp }}/my.jks
-          KS_PASS: ${{ secrets.KS_PASS }}
-          KS_ALIAS: mykey
+      - run: gradle assembleDebug
       - name: Publish the bare APK as a release
         env: { GH_TOKEN: "${{ github.token }}" }
         run: |
-          cp app/build/outputs/apk/release/app-release.apk OldMenu.apk
-          gh release create "v${{ github.run_number }}" OldMenu.apk --title "Old Menu build ${{ github.run_number }}" --notes "Sideload with adb install -r OldMenu.apk"
+          cp app/build/outputs/apk/debug/app-debug.apk OldMenu.apk
+          gh release create "v${{ github.run_number }}" OldMenu.apk --title "Old Menu build ${{ github.run_number }}" --notes "Sideload with adb install -r OldMenu.apk. Uninstall the old version before installing a new build."
